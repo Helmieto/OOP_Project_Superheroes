@@ -47,8 +47,6 @@ public:
 				unsigned short _price,
 				Element _element);
 
-	//Superhero(const Superhero& other) = delete;
-	//Superhero& operator=(const Superhero& other) = delete;
-	//~Superhero() = default;
+	
 };
 

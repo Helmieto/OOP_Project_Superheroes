@@ -74,6 +74,3 @@ Superhero::Superhero
 	setElement(_element);
 }
 
-//Superhero::Superhero(const Superhero& other) = delete;
-//Superhero& Superhero::operator=(const Superhero & other) = delete;
-//Superhero::~Superhero() = default;
