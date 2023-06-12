@@ -57,6 +57,37 @@ Mode Superhero::getMode() const {
 	return mode;
 }
 
+void Superhero::printElement() const {
+	switch (element) {
+	case Element::earth:
+		std::cout << "Earth";
+		break;
+	case Element::fire:
+		std::cout << "Fire";
+		break;
+	case Element::water:
+		std::cout << "Water";
+		break;
+	default:
+		break;
+	}
+}
+
+void Superhero::printInfo() const {
+	std::cout << "name:" << getFirstName() << ' ' << getLastName() << ' ';
+	std::cout << "price:" << getPrice() << "$ ";
+	std::cout << "type:"; printElement();
+	std::cout << " power:" << getPower();
+
+}
+
+void Superhero::changeMode() {
+	if (mode == Mode::offencive)
+		setMode(Mode::defencive);
+	else /*when hero is bought this function will set mode to offensive by default*/
+		setMode(Mode::offencive);
+}
+
 Superhero::Superhero() : price(0), power(0) {}
 
 Superhero::Superhero

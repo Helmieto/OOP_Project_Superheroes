@@ -1,7 +1,5 @@
 #include "User.h"
 
-
-
 void User::setFirstName(const String& otherName) {
 	firstName = otherName;
 }
@@ -38,6 +36,9 @@ String User::getEmail() const {
 	return email;
 }
 
+bool User::checkUsername(String otherName) const {
+	return (username == otherName);
+}
 bool User::checkPassword(String otherPass) const {
 	return (password == otherPass);
 }

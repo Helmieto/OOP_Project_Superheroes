@@ -38,6 +38,10 @@ public:
 	Element getElement() const;
 	Mode getMode() const;
 
+	void printElement() const;
+	void printInfo() const;
+	void changeMode();
+
 	Superhero();
 
 	Superhero(	String _firstName,

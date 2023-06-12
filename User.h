@@ -7,8 +7,7 @@ enum class Type {
 	player, admin
 };
 
-class User
-{
+class User {
 	String firstName;
 	String lastName;
 	String username;
@@ -28,6 +27,7 @@ public:
 	String getUsername() const;
 	String getEmail() const;
 
+	bool checkUsername(String otherName) const;
 	bool checkPassword(String otherPass) const;
 
 	virtual Type identify() const = 0;

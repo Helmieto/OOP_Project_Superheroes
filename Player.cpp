@@ -12,7 +12,7 @@ Player::Player(String Fname, String Lname, String Uname, String Email, String Pa
 void Player::setBalance(unsigned _balance) {
 	balance = _balance;
 }
-
+//CHECK
 void Player::buySuperhero(Superhero& a) {
 	heroes.pushBack(a);
 	return;
@@ -25,13 +25,6 @@ unsigned Player::getBalance() const {
 Type Player::identify() const {
 	return Type::player;
 }
-
-/*> 1. Slayer300 2500$
-		1.1. Super Man Earth
-		1.2. Fire Man Fire
->2. Go6ko 3200$
-		2.1. Bat Man Earth
-*/
 
 void Player::printHeroes() const {
 	int heroesCount = heroes.getSize();
