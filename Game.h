@@ -14,121 +14,50 @@ class Game {
 	Vector<Admin> admins;
 	Vector<Player> players;
 	Vector<Superhero> shop;
-	User* loggedUser;
+	struct {
+		Player* loggedPlayer = nullptr;
+		Admin* loggedAdmin = nullptr;
+
+		User* getLoggedUser() {
+			if (loggedPlayer)
+				return loggedPlayer;
+			if (loggedAdmin)
+				return loggedAdmin;
+			//thorow
+		}
+
+		void logout() {
+			if (loggedPlayer)
+				loggedPlayer = nullptr;
+			if (loggedAdmin)
+				loggedAdmin = nullptr;
+		}
+	} loggedUser;
 
 public:
+
+	Game();
+	~Game();
 	//admin functions
-	//void adminLogin();
-	void addAdmin(String Fname, String Lname, String Uname, String Email, String Pass);
-	void addPlayer(String Fname, String Lname, String Uname, String Email, String Pass, unsigned bal);
-	void deletePlayer(String Uname);
-	void printInfo() const;
-	void addSuperhero(	String Fname, String Lname, String nickname,
-						unsigned short power, unsigned short price, Element element);
+	void adminLogin(const String& Uname, const String& Pass);
+	void addAdmin(const String& Fname, const String& Lname, const String& Uname, const String& Email, const String& Pass);
+	void addPlayer(const String& Fname, const String& Lname, const String& Uname, const String& Email, const String& Pass);
+	void deletePlayer(const String& Uname);
+	void showAdmins() const;
+	void showPlayers() const;
+	void addSuperhero(	const String& Fname, const String& Lname, const String& nickname,
+						const unsigned short power, const unsigned short price, const Element& element);
 				
 	//player functions
-	//void userLogin();
+	void userLogin(const String& Uname, const String& Pass);
 	void deleteProfile();
 	void printInfo2() const;
-	void seeLeaderboard() const;
+	void seeLeaderboard();
 	void showMarket() const;
-	void buyHero(String Fname, String Lname);
-	void attack(String Uname);
-	void changePosition(String Fname, String Lname);
+	void buyHero(const String& Fname, const String& Lname);
+	void attack(const String& Uname);
+	void changePosition(const String& Fname, const String& Lname);
 	void exit();
 
 };
 
-//admin functions
-void Game::addAdmin(String Fname, String Lname, String Uname, String Email, String Pass) {
-	Admin temp(Fname, Lname, Uname, Email, Pass);
-	admins.pushBack(std::move(temp));
-}
-
-void Game::addPlayer(String Fname, String Lname, String Uname, String Email, String Pass, unsigned bal) {
-	Player temp(Fname, Lname, Uname, Email, Pass, STARTING_MONEY);
-	players.pushBack(std::move(temp));
-}
-
-void Game::deletePlayer(String Uname) {
-	int playersCount = players.getSize();
-	for (int i = 0; i < playersCount; i++) {
-		if (players[i].getUsername() == Uname) {
-			players.popAt(i);
-			break;
-		}
-	}
-}
-
-void Game::printInfo() const {
-	//later
-}
-
-void Game::addSuperhero(String Fname, String Lname, String nickname,
-	unsigned short power, unsigned short price, Element element) {
-
-}
-
-//player functions
-void Game::deleteProfile() {
-	int playersCount = players.getSize();
-	for (int i = 0; i < playersCount; i++) {
-		if (players[i].getUsername() == loggedUser->getUsername()) {
-			players.popAt(i);
-			break;
-		}
-	}
-	loggedUser = nullptr; //THIS IS BLUEPPRINT, WILL HAVE TO CHECK FOR MEMORY LEAKS
-}
-
-//prints player info for players
-void Game::printInfo2() const {
-	int playersCount = players.getSize();
-	for (int i = 0; i < playersCount; i++) {
-		std::cout << i + 1 << ". ";
-		players[i].printInfoForPlayers();
-		std::cout << std::endl;
-	}
-}
-
-void Game::seeLeaderboard() const {
-	//copy printInfo2 and sort it 
-}
-
-void Game::showMarket() const {
-	int heroesCount = shop.getSize();
-	for (int i = 0; i < heroesCount; i++) {
-		std::cout << i + 1 << ". ";
-		shop[i].printInfo();
-		std::cout << std::endl;
-	}
-}
-
-void Game::buyHero(String Fname, String Lname) {
-	int heroesCount = shop.getSize();
-	for (int i = 0; i < heroesCount; i++) {
-		if (shop[i].getFirstName() == Fname && shop[i].getLastName() == Lname) {
-			//loggedUser->buyHero(shop[i]); ???
-			shop.popAt(i);
-			break;
-		}
-	}
-}
-
-void Game::attack(String Uname) {
-
-}
-//FIX ME
-void Game::changePosition(String Fname, String Lname) {
-	/*int size = loggedUser->heroes.getSize();
-	for (int i = 0; i < size; i++) {
-		if (loggedUser->heroes[i].getFirstName() == Fname && loggedUser->heroes[i].getLastName() == Lname) {
-			loggedUser->heroes[i].changeMode();
-			break;
-		}
-	}*/
-}
-
-void Game::exit() {
-	loggedUser = nullptr;
-}

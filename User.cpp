@@ -36,9 +36,9 @@ String User::getEmail() const {
 	return email;
 }
 
-bool User::checkUsername(String otherName) const {
+bool User::checkUsername(const String& otherName) const {
 	return (username == otherName);
 }
-bool User::checkPassword(String otherPass) const {
+bool User::checkPassword(const String& otherPass) const {
 	return (password == otherPass);
 }

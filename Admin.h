@@ -4,7 +4,7 @@
 class Admin : public User {
 	
 public:
-	
+	Admin() = default;
 	Admin(String Fname, String Lname, String Uname, String Email, String Pass);
 
 	Type identify() const override;

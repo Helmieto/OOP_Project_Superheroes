@@ -16,6 +16,8 @@ class User {
 	
 public:
 
+	//User() = default;
+
 	void setFirstName(const String& otherName);
 	void setLastName(const String& otherName);
 	void setUsername(const String& otherName);
@@ -27,8 +29,8 @@ public:
 	String getUsername() const;
 	String getEmail() const;
 
-	bool checkUsername(String otherName) const;
-	bool checkPassword(String otherPass) const;
+	bool checkUsername(const String& otherName) const;
+	bool checkPassword(const String& otherPass) const;
 
 	virtual Type identify() const = 0;
 	virtual void printInfoForPlayers() const = 0;

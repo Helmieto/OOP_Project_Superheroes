@@ -14,6 +14,7 @@ void Player::setBalance(unsigned _balance) {
 }
 //CHECK
 void Player::buySuperhero(Superhero& a) {
+	a.changeMode();
 	heroes.pushBack(a);
 	return;
 }
