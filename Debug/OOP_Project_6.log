@@ -1,9 +1,0 @@
-﻿  Admin.cpp
-  Game.cpp
-  Player.cpp
-  Superhero.cpp
-  User.cpp
-  main.cpp
-  Generating Code...
-C:\Users\Acer\source\repos\OOP_Project_6\OOP_Project_6\Game.cpp(198): error C4703: potentially uninitialized local pointer variable 'attacked' used
-C:\Users\Acer\source\repos\OOP_Project_6\OOP_Project_6\Game.cpp(202): error C4703: potentially uninitialized local pointer variable 'attacker' used
