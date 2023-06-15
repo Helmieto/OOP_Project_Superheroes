@@ -9,6 +9,13 @@ Game::~Game() {
 	loggedUser.logout();
 }
 
+int Game::comparePowers(const int power1, const int power2) const {
+	if (power1 < power2) {
+		return -1;
+	}
+	return (power1 > power2);
+}
+
 //admin functions
 void Game::adminLogin(const String& Uname, const String& Pass) {
 	int adminsCount = admins.getSize();
@@ -21,9 +28,6 @@ void Game::adminLogin(const String& Uname, const String& Pass) {
 			else {
 				//throw wrong password
 			}
-		}
-		else {
-			//throw wrong username
 		}
 	}
 }
@@ -86,9 +90,6 @@ void Game::userLogin(const String& Uname, const String& Pass) {
 				//throw wrong password
 			}
 		}
-		else {
-			//throw wrong username
-		}
 	}
 }
 
@@ -100,7 +101,7 @@ void Game::deleteProfile() {
 			break;
 		}
 	}
-	loggedUser.logout(); //THIS IS BLUEPPRINT, WILL HAVE TO CHECK FOR MEMORY LEAKS
+	loggedUser.logout(); 
 }
 
 //prints player info for players
@@ -156,10 +157,161 @@ void Game::buyHero(const String& Fname, const String& Lname) {
 	//throw
 }
 
-void Game::attack(const String& Uname) {
-	//tba
+/*Как се определя дали едно нападение е успешно:
+
+2.Ако играч нападне супергерой на друг играч, първо се сравняват техният тип сили. Всеки един тип сила побеждава друг, както следва:      
+Огън->Земя->Вода->Огън. 
+-Ако нападащият играч е с доминиращ тип сила, то точките на супергероя му в тази битка биват удвоени 
+и се прилагат правилата за сравняване на сила, изброени по-долу. 
+
+-В случай, че нападнатият играч е с доминиращия тип сила, 
+то тогава точките на противниковия супергерой се намалят на половина и отново се сравнява силата на супергероите. 
+
+-В случай, че типовете сили съвпадат и супергероят на нападнатия играч е в атакуващ режим, се сравнява силата на супергероите.
+
+Победеният супергерой винаги бива унищожаван от колекцията на победения в битка играч. Сравняването на сила е както следва:
+
+Ако супергероят на нападащия играч е с по-голяма сила от този на неговия опонент, то нападнатият играч губи пари с размер 
+разликата на силата на супергероите, които се съревновават, а нападащият играч печели сума равна на същата разлика.
+
+Ако супергероят на нападащия играч е с по-малко сила от този на нападнатия, то нападнатият печели сума z, 
+а нападащият губи пари на стойност 2 пъти разликата на силите на супергероите, които се съревновават.
+
+Ако супергероите са с равни сили, тогава нападнатия играч не променя и не губи пари, но нападащия губи сума k.
+В случай, че нападащият играч напада супергерой, който е в дефанзивен режим, то тогава нападнатият не губи никакви пари 
+(но може да изгуби героя си) и оценяването на победител е както в 2.
+*/
+void Game::attack(const String& Uname, const String& FnameAtck, const String& LnameAtck, const String& FnameDef, const String& LnameDef) {
+	//find the player
+	Player* attacked;
+	int playersCount = players.getSize();
+	for (int i = 0; i < playersCount; i++) {
+		if (players[i].getUsername() == Uname) {
+			attacked = &players[i];
+			break;
+		}
+	}
+	if (!attacked) {}
+		//throw
+		
+
+	//find attacking hero
+	int attackerIdx;
+	Superhero* attacker;
+	int heroesCount1 = loggedUser.loggedPlayer->getHeroes().getSize();
+	for (int i = 0; i < heroesCount1; i++) {
+		if (loggedUser.loggedPlayer->getHeroes()[i].getFirstName() == FnameAtck &&
+			loggedUser.loggedPlayer->getHeroes()[i].getLastName() == LnameAtck) {
+			
+			attacker = &loggedUser.loggedPlayer->getHeroes()[i];
+			attackerIdx = i;
+			break;
+		}
+	}
+
+	
+	int defenderIdx;
+	Superhero* defender;
+	int heroesCount2 = attacked->getHeroes().getSize();
+
+	//1
+	if (heroesCount2 == 0) {
+		int power = attacker->getPower();
+		attacked->loseMoney(power);
+		loggedUser.loggedPlayer->winMoney(FIGHT_WIN_REWARD);
+		return;
+	}
+
+	//find defending hero
+	for (int i = 0; i < heroesCount2; i++) {
+		if (attacked->getHeroes()[i].getFirstName() == FnameAtck &&
+			attacked->getHeroes()[i].getLastName() == LnameAtck) {
+
+			defender = &attacked->getHeroes()[i];
+			defenderIdx = i;
+			break;
+		}
+	}
+
+	
+	bool isInOffMode = (defender->getMode() == Mode::offencive);
+
+	int attackerPower = attacker->getPower();
+	int defenderPower = defender->getPower();
+
+	if (ElementUtils::lessThan(attacker->getElement(), defender->getElement())) {
+
+		int res = comparePowers(attackerPower, defenderPower * 2);
+
+		if (res < 0) { // atacker wins
+			if (isInOffMode) {
+				int diff = attackerPower - defenderPower;
+				attacked->loseMoney(diff);
+				loggedUser.loggedPlayer->winMoney(diff);
+			}
+			attacked->getHeroes().popAt(defenderIdx);
+		}
+		else if (res > 0) { // defender wins
+			
+			int diff = defenderPower - attackerPower;
+			attacked->winMoney(FIGHT_WIN_REWARD);
+			loggedUser.loggedPlayer->loseMoney(2 * diff);
+			
+			loggedUser.loggedPlayer->getHeroes().popAt(attackerIdx);
+		}
+		else { // equal
+			loggedUser.loggedPlayer->loseMoney(FIGHT_DRAW_LOSS);
+		}
+	}
+	else if (ElementUtils::greaterThan(attacker->getElement(), defender->getElement())) {
+		int res = comparePowers(attacker->getPower() * 2, defender->getPower());
+		
+		if (res < 0) { // atacker wins
+			if (isInOffMode) {
+				int diff = attackerPower - defenderPower;
+				attacked->loseMoney(diff);
+				loggedUser.loggedPlayer->winMoney(diff);
+			}
+			attacked->getHeroes().popAt(defenderIdx);
+		}
+		else if (res > 0) { // defender wins
+
+			int diff = defenderPower - attackerPower;
+			attacked->winMoney(FIGHT_WIN_REWARD);
+			loggedUser.loggedPlayer->loseMoney(2 * diff);
+
+			loggedUser.loggedPlayer->getHeroes().popAt(attackerIdx);
+		}
+		else { // equal
+			loggedUser.loggedPlayer->loseMoney(FIGHT_DRAW_LOSS);
+		}
+	}
+	else {
+		int res = comparePowers(attacker->getPower(), defender->getPower());
+		
+		if (res < 0) { // atacker wins
+			if (isInOffMode) {
+				int diff = attackerPower - defenderPower;
+				attacked->loseMoney(diff);
+				loggedUser.loggedPlayer->winMoney(diff);
+			}
+			attacked->getHeroes().popAt(defenderIdx);
+		}
+		else if (res > 0) { // defender wins
+
+			int diff = defenderPower - attackerPower;
+			attacked->winMoney(FIGHT_WIN_REWARD);
+			loggedUser.loggedPlayer->loseMoney(2 * diff);
+
+			loggedUser.loggedPlayer->getHeroes().popAt(attackerIdx);
+		}
+		else { // equal
+			loggedUser.loggedPlayer->loseMoney(FIGHT_DRAW_LOSS);
+		}
+	}
 }
-//FIX ME
+
+
 void Game::changePosition(const String& Fname, const String& Lname) {
 	int size = loggedUser.loggedPlayer->getHeroes().getSize();
 	for (int i = 0; i < size; i++) {

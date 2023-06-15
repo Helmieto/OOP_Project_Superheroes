@@ -19,12 +19,32 @@ void Player::buySuperhero(Superhero& a) {
 	return;
 }
 
-unsigned Player::getBalance() const {
-	return balance;
+void Player::destroyHero(const String& Fname, const String& Lname) {
+	int heroesCount = heroes.getSize();
+	for (int i = 0; i < heroesCount; i++) {
+		if (heroes[i].getFirstName() == Fname && heroes[i].getLastName() == Lname) {
+			heroes.popAt(i);
+			return;
+		}
+		else {}//throw 
+	}
 }
 
-Type Player::identify() const {
-	return Type::player;
+void Player::winMoney(const unsigned amount) {
+	setBalance(getBalance() + amount);
+}
+
+void Player::loseMoney(const unsigned amount) {
+	int result = getBalance() - amount;
+	result > 0 ? setBalance(result) : setBalance(0);
+}
+
+Vector<Superhero> Player::getHeroes() const {
+	return heroes;
+}
+
+unsigned Player::getBalance() const {
+	return balance;
 }
 
 void Player::printHeroes() const {

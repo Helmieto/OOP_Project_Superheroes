@@ -10,14 +10,13 @@ public:
 	Player(String Fname, String Lname, String Uname, String Email, String Pass, unsigned bal);
 	void setBalance(unsigned _balance);
 	void buySuperhero(Superhero& a); //CHECK!!
-	
-	Vector<Superhero> getHeroes() const {
-		return heroes;
-	}
+	void destroyHero(const String& Fname, const String& Lname);
+	void winMoney(const unsigned amount);
+	void loseMoney(const unsigned amount);
+
+	Vector<Superhero> getHeroes() const;
 	unsigned getBalance() const;
 	
-	Type identify() const override;
-
 	void printHeroes() const;
 	void printInfoForPlayers() const override;
 	void printInfoForAdmins() const override;

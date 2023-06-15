@@ -3,8 +3,35 @@
 
 enum class Element {
 
-	fire, earth, water
+	fire, earth, water,
 };
+
+struct ElementUtils {
+	static bool lessThan(const Element& lhs, const Element& rhs) {
+		if (lhs == Element::fire) {
+			return rhs == Element::water;
+		}
+		if (lhs == Element::earth) {
+			return rhs == Element::fire;
+		}
+		if (lhs == Element::water) {
+			return rhs == Element::earth;
+		}
+	}
+
+	static bool greaterThan(const Element& lhs, const Element& rhs) {
+		if (lhs == Element::fire) {
+			return rhs == Element::earth;
+		}
+		if (lhs == Element::earth) {
+			return rhs == Element::water;
+		}
+		if (lhs == Element::water) {
+			return rhs == Element::fire;
+		}
+	}
+};
+
 
 enum class Mode {
 	offencive, defencive, nonDetermined
@@ -41,7 +68,7 @@ public:
 	void printElement() const;
 	void printInfo() const;
 	void changeMode();
-
+	
 	Superhero();
 
 	Superhero(	String _firstName,
