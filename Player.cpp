@@ -1,7 +1,7 @@
 #include "Player.h"
 
 
-Player::Player(String Fname, String Lname, String Uname, String Email, String Pass, unsigned bal) : balance(bal){
+Player::Player(String Fname, String Lname, String Uname, String Email, String Pass, unsigned bal) : balance(bal) , turnsRemaining(3){
 	setFirstName(Fname);
 	setLastName(Lname);
 	setUsername(Uname);
@@ -12,6 +12,18 @@ Player::Player(String Fname, String Lname, String Uname, String Email, String Pa
 void Player::setBalance(unsigned _balance) {
 	balance = _balance;
 }
+
+void Player::setTurns(int _turns) {
+	turnsRemaining = _turns;
+}
+
+void Player::resetTurns() {
+	setTurns(3);
+}
+
+void Player::useTurn() {
+	turnsRemaining -= 1;
+}
 //CHECK
 void Player::buySuperhero(Superhero& a) {
 	a.changeMode();
@@ -19,12 +31,25 @@ void Player::buySuperhero(Superhero& a) {
 	return;
 }
 
+void Player::winMoney(const unsigned amount) {
+	setBalance(getBalance() + amount);
+}
+
+void Player::loseMoney(const unsigned amount) {
+	int result = getBalance() - amount;
+	result > 0 ? setBalance(result) : setBalance(0);
+}
+
+Vector<Superhero> Player::getHeroes() const {
+	return heroes;
+}
+
 unsigned Player::getBalance() const {
 	return balance;
 }
 
-Type Player::identify() const {
-	return Type::player;
+int Player::getTurns() const {
+	return turnsRemaining;
 }
 
 void Player::printHeroes() const {

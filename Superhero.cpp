@@ -91,12 +91,12 @@ void Superhero::changeMode() {
 Superhero::Superhero() : price(0), power(0) {}
 
 Superhero::Superhero
-(	String _firstName,
+(String _firstName,
 	String _lastName,
 	String _nickname,
 	unsigned short _power,
 	unsigned short _price,
-	Element _element) 
+	Element _element)
 
 	: price(_price), power(_power) {
 	setFirstName(_firstName);

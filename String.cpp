@@ -166,6 +166,16 @@ std::ostream& operator<<(std::ostream& os, const String& obj)
 	return os << obj.c_str();
 }
 
+std::istream& operator>>(std::istream& is, String& obj)
+{
+	const size_t bufferSize = 1024;
+	char buffer[bufferSize];
+
+	is >> buffer;
+	obj = std::move(buffer);
+
+	return is;
+}
 String operator+(const String& lhs, const String& rhs)
 {
 	size_t newStrSize = lhs.length() + rhs.length();

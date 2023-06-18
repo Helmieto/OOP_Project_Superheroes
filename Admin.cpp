@@ -8,10 +8,6 @@ Admin::Admin(String Fname, String Lname, String Uname, String Email, String Pass
 	setPassword(Pass);
 }
 
-Type Admin::identify() const {
-	return Type::admin;
-}
-
 void Admin::printInfoForPlayers() const {
 	//or throw
 	return;

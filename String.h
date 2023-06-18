@@ -46,6 +46,7 @@ public:
 	friend String operator+(const String& lhs, const String& rhs);
 };
 
+std::istream& operator>>(std::istream& is, String& obj);
 std::ostream& operator<<(std::ostream& os, const String& obj);
 
 bool operator<(const String& lhs, const String& rhs);
