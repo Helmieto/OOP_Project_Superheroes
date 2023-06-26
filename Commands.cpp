@@ -21,24 +21,24 @@ void Command1::execute() {
 	}
 
 	String uName, pass;
-	while (true) {
-		std::cout << "Enter username and password!" << std::endl;
-		std::cin >> uName >> pass;
-		std::cout << std::endl;
+	
+	std::cout << "Enter username and password!" << std::endl;
+	std::cin >> uName >> pass;
+	std::cout << std::endl;
 
-		try {
-			game->adminLogin(uName, pass);
-			return;
+	try {
+		game->adminLogin(uName, pass);
+		return;
+	}
+	catch (int code) {
+		if (code == 101) {
+			std::cout << "Wrong password!" << std::endl;
 		}
-		catch (int code) {
-			if (code == 101) {
-				std::cout << "Wrong password!" << std::endl;
-			}
-			if (code == 102) {
-				std::cout << "Wrong username!" << std::endl;
-			}
+		if (code == 102) {
+			std::cout << "Wrong username!" << std::endl;
 		}
 	}
+	
 }
 
 
@@ -64,24 +64,23 @@ void Command2::execute() {
 
 	String uName, pass;
 
-	while (true) {
-		std::cout << "Enter username and password!" << std::endl;
-		std::cin >> uName >> pass;
-		std::cout << std::endl;
+	std::cout << "Enter username and password!" << std::endl;
+	std::cin >> uName >> pass;
+	std::cout << std::endl;
 
-		try {
-			game->playerLogin(uName, pass);
-			return;
+	try {
+		game->playerLogin(uName, pass);
+		return;
+	}
+	catch (int code) {
+		if (code == 101) {
+			std::cout << "Wrong password!" << std::endl;
 		}
-		catch (int code) {
-			if (code == 101) {
-				std::cout << "Wrong password!" << std::endl;
-			}
-			if (code == 102) {
-				std::cout << "Wrong username!" << std::endl;
-			}
+		if (code == 102) {
+			std::cout << "Wrong username!" << std::endl;
 		}
 	}
+	
 }
 
 //logout
@@ -97,6 +96,8 @@ void Command3::execute() {
 	
 	try {
 		game->exit();
+		std::cout << "You logged out successfully!" << std::endl;
+		return;
 	}
 	catch (int code) {
 		if (code == 103) {
@@ -104,7 +105,7 @@ void Command3::execute() {
 		}
 	}
 
-	return;
+	
 }
 
 //add admin

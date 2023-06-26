@@ -29,9 +29,10 @@ class Game {
 		void logout() {
 			if (loggedPlayer != nullptr)
 				loggedPlayer = nullptr;
-			if (loggedAdmin != nullptr)
+			else if (loggedAdmin != nullptr)
 				loggedAdmin = nullptr;
-			throw 103;//no logged user
+			else
+				throw 103;//no logged user
 		}
 	} loggedUser;
 
