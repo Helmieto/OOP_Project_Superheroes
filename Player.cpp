@@ -31,7 +31,6 @@ void Player::buySuperhero(Superhero& a) {
 	return;
 }
 
-<<<<<<< HEAD
 void Player::winMoney(const unsigned amount) {
 	setBalance(getBalance() + amount);
 }
@@ -51,34 +50,6 @@ unsigned Player::getBalance() const {
 
 int Player::getTurns() const {
 	return turnsRemaining;
-=======
-void Player::destroyHero(const String& Fname, const String& Lname) {
-	int heroesCount = heroes.getSize();
-	for (int i = 0; i < heroesCount; i++) {
-		if (heroes[i].getFirstName() == Fname && heroes[i].getLastName() == Lname) {
-			heroes.popAt(i);
-			return;
-		}
-		else {}//throw 
-	}
-}
-
-void Player::winMoney(const unsigned amount) {
-	setBalance(getBalance() + amount);
-}
-
-void Player::loseMoney(const unsigned amount) {
-	int result = getBalance() - amount;
-	result > 0 ? setBalance(result) : setBalance(0);
-}
-
-Vector<Superhero> Player::getHeroes() const {
-	return heroes;
-}
-
-unsigned Player::getBalance() const {
-	return balance;
->>>>>>> 11123104908f75a64170f523a4f3db16a17004d3
 }
 
 void Player::printHeroes() const {
