@@ -258,6 +258,10 @@ void Game::buyHero(const String& Fname, const String& Lname) {
 }
 
 void Game::attack(const String& Uname, const String& FnameAtck, const String& LnameAtck, const String& FnameDef, const String& LnameDef) {
+	if (loggedUser.loggedPlayer->getUsername() == Uname) {
+		throw 800;//player is attacking himself
+	}
+	
 	//find the player
 	Player* attacked = nullptr;
 	int playersCount = players.getSize();

@@ -563,6 +563,9 @@ void Command16::execute() {
 		return;
 	}
 	catch (int code) {
+		if (code == 800) {
+			std::cout << "You cannot attack yourself!" << std::endl;
+		}
 		if (code == 801) {
 			std::cout << "Player with this username doesn't exist! Try again!" << std::endl;
 		}
