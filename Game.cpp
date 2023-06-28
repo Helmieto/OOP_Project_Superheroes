@@ -44,11 +44,12 @@ bool Game::validPassword(const String& password) const {
 	bool smallLetter = false, capLetter = false, number = false; //flags
 	int length = password.length();
 	for (int i = 0; i < length; i++) {
-		if (password[i] >= 'a' || password[i] <= 'z')
+		char temp = password[i];
+		if (temp >= 'a' && temp <= 'z')
 			smallLetter = true;
-		if (password[i] >= 'A' || password[i] <= 'Z')
+		if (temp >= 'A' && temp <= 'Z')
 			capLetter = true;
-		if (password[i] >= '0' || password[i] <= '9')
+		if (temp >= '0' && temp <= '9')
 			number = true;
 	}
 	return (smallLetter && capLetter && number);
@@ -273,30 +274,30 @@ void Game::attack(const String& Uname, const String& FnameAtck, const String& Ln
 
 
 //find attacking hero
-	int attackerIdx;
-	Superhero* attacker = nullptr;
+	int attackerIdx = -1;
+	Superhero attacker;
 	int heroesCount1 = loggedUser.loggedPlayer->getHeroes().getSize();
 	for (int i = 0; i < heroesCount1; i++) {
 		if (loggedUser.loggedPlayer->getHeroes()[i].getFirstName() == FnameAtck &&
 			loggedUser.loggedPlayer->getHeroes()[i].getLastName() == LnameAtck) {
 
-			attacker = &loggedUser.loggedPlayer->getHeroes()[i];
+			attacker = loggedUser.loggedPlayer->getHeroes()[i];
 			attackerIdx = i;
 			break;
 		}
 	}
 
-	if (!attacker) {
+	if (attackerIdx < 0) {
 		throw 802;//atacking hero not found
 	}
 
-	int defenderIdx;
-	Superhero* defender = nullptr;
+	int defenderIdx = -1;
+	Superhero defender;
 	int heroesCount2 = attacked->getHeroes().getSize();
 
 	//if the attacked player has no heroes
 	if (heroesCount2 == 0) {
-		int power = attacker->getPower();
+		int power = attacker.getPower();
 		attacked->loseMoney(power);
 		loggedUser.loggedPlayer->winMoney(FIGHT_WIN_REWARD);
 		loggedUser.loggedPlayer->useTurn();
@@ -305,88 +306,88 @@ void Game::attack(const String& Uname, const String& FnameAtck, const String& Ln
 
 	//find defending hero
 	for (int i = 0; i < heroesCount2; i++) {
-		if (attacked->getHeroes()[i].getFirstName() == FnameAtck &&
-			attacked->getHeroes()[i].getLastName() == LnameAtck) {
+		if (attacked->getHeroes()[i].getFirstName() == FnameDef &&
+			attacked->getHeroes()[i].getLastName() == LnameDef) {
 
-			defender = &attacked->getHeroes()[i];
+			defender = attacked->getHeroes()[i];
 			defenderIdx = i;
 			break;
 		}
 	}
-	if (!defender) {
+	if (defenderIdx < 0) {
 		throw 803;//defending hero not found
 	}
 
-	bool isInOffMode = (defender->getMode() == Mode::offencive);
+	bool isInOffMode = (defender.getMode() == Mode::offencive);
 
-	int attackerPower = attacker->getPower();
-	int defenderPower = defender->getPower();
+	int attackerPower = attacker.getPower();
+	int defenderPower = defender.getPower();
 
-	if (ElementUtils::lessThan(attacker->getElement(), defender->getElement())) {
+	if (ElementUtils::lessThan(attacker.getElement(), defender.getElement())) {
 
 		int res = comparePowers(attackerPower, defenderPower * 2);
 
-		if (res < 0) { // atacker wins
+		if (res > 0) { // attacker wins
 			if (isInOffMode) {
-				int diff = attackerPower - defenderPower;
+				int diff = attackerPower - defenderPower * 2;
 				attacked->loseMoney(diff);
 				loggedUser.loggedPlayer->winMoney(diff);
 			}
-			attacked->getHeroes().popAt(defenderIdx);
+			attacked->destroySuperhero(defenderIdx);
 		}
-		else if (res > 0) { // defender wins
+		else if (res < 0) { // defender wins
 
-			int diff = defenderPower - attackerPower;
+			int diff = defenderPower * 2 - attackerPower;
 			attacked->winMoney(FIGHT_WIN_REWARD);
 			loggedUser.loggedPlayer->loseMoney(2 * diff);
 
-			loggedUser.loggedPlayer->getHeroes().popAt(attackerIdx);
+			loggedUser.loggedPlayer->destroySuperhero(attackerIdx);
 		}
 		else { // equal
 			loggedUser.loggedPlayer->loseMoney(FIGHT_DRAW_LOSS);
 		}
 	}
-	else if (ElementUtils::greaterThan(attacker->getElement(), defender->getElement())) {
-		int res = comparePowers(attacker->getPower() * 2, defender->getPower());
+	else if (ElementUtils::greaterThan(attacker.getElement(), defender.getElement())) {
+		int res = comparePowers(attackerPower * 2, defenderPower);
 
-		if (res < 0) { // atacker wins
+		if (res > 0) { // attacker wins
 			if (isInOffMode) {
-				int diff = attackerPower - defenderPower;
+				int diff = attackerPower * 2 - defenderPower;
 				attacked->loseMoney(diff);
 				loggedUser.loggedPlayer->winMoney(diff);
 			}
-			attacked->getHeroes().popAt(defenderIdx);
+			attacked->destroySuperhero(defenderIdx);
 		}
-		else if (res > 0) { // defender wins
+		else if (res < 0) { // defender wins
 
-			int diff = defenderPower - attackerPower;
+			int diff = defenderPower - attackerPower * 2;
 			attacked->winMoney(FIGHT_WIN_REWARD);
 			loggedUser.loggedPlayer->loseMoney(2 * diff);
 
-			loggedUser.loggedPlayer->getHeroes().popAt(attackerIdx);
+			loggedUser.loggedPlayer->destroySuperhero(attackerIdx);
 		}
 		else { // equal
 			loggedUser.loggedPlayer->loseMoney(FIGHT_DRAW_LOSS);
 		}
 	}
 	else {
-		int res = comparePowers(attacker->getPower(), defender->getPower());
+		int res = comparePowers(attackerPower, defenderPower);
 
-		if (res < 0) { // atacker wins
+		if (res > 0) { // attacker wins
 			if (isInOffMode) {
 				int diff = attackerPower - defenderPower;
 				attacked->loseMoney(diff);
 				loggedUser.loggedPlayer->winMoney(diff);
 			}
-			attacked->getHeroes().popAt(defenderIdx);
+			attacked->destroySuperhero(defenderIdx);
 		}
-		else if (res > 0) { // defender wins
+		else if (res < 0) { // defender wins
 
 			int diff = defenderPower - attackerPower;
 			attacked->winMoney(FIGHT_WIN_REWARD);
 			loggedUser.loggedPlayer->loseMoney(2 * diff);
 
-			loggedUser.loggedPlayer->getHeroes().popAt(attackerIdx);
+			loggedUser.loggedPlayer->destroySuperhero(attackerIdx);
 		}
 		else { // equal
 			loggedUser.loggedPlayer->loseMoney(FIGHT_DRAW_LOSS);
@@ -400,7 +401,7 @@ void Game::changeMode(const String& Fname, const String& Lname) {
 	int size = loggedUser.loggedPlayer->getHeroes().getSize();
 	for (int i = 0; i < size; i++) {
 		if (loggedUser.loggedPlayer->getHeroes()[i].getFirstName() == Fname && loggedUser.loggedPlayer->getHeroes()[i].getLastName() == Lname) {
-			loggedUser.loggedPlayer->getHeroes()[i].changeMode();
+			loggedUser.loggedPlayer->changeHeroMode(i);
 			loggedUser.loggedPlayer->useTurn();
 			return;
 		}

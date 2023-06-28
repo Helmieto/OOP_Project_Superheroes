@@ -10,6 +10,8 @@ Command1::~Command1() {
 }
 
 void Command1::execute() {
+	std::cout << std::endl;
+
 	if (game->adminisLoggedIn()) {
 		std::cout << "Another admin is already logged in!" << std::endl;
 		return;
@@ -24,7 +26,7 @@ void Command1::execute() {
 	
 	std::cout << "Enter username and password!" << std::endl;
 	std::cin >> uName >> pass;
-	std::cout << std::endl;
+
 
 	try {
 		game->adminLogin(uName, pass);
@@ -52,6 +54,8 @@ Command2::~Command2() {
 }
 
 void Command2::execute() {
+	std::cout << std::endl;
+
 	if (game->adminisLoggedIn()) {
 		std::cout << "Another admin is already logged in!" << std::endl;
 		return;
@@ -93,7 +97,8 @@ Command3::~Command3() {
 }
 
 void Command3::execute() {
-	
+	std::cout << std::endl;
+
 	try {
 		game->exit();
 		std::cout << "You logged out successfully!" << std::endl;
@@ -118,11 +123,14 @@ Command4::~Command4() {
 }
 
 void Command4::execute() {
+	std::cout << std::endl;
+
 	if (!game->adminisLoggedIn()) {
 		std::cout << "Log in as an admin to add another admin!" << std::endl;
 		return;
 	}
 
+	std::cout << "Input first and last name, username, email and password of the admin" << std::endl;
 	String fName, lName, uName, email, pass;
 	std::cin >> fName >> lName >> uName >> email >> pass;
 
@@ -154,11 +162,13 @@ Command5::~Command5() {
 }
 
 void Command5::execute() {
+	std::cout << std::endl;
+
 	if (!game->adminisLoggedIn()) {
 		std::cout << "Log in as an admin to add a player!" << std::endl;
 		return;
 	}
-
+	std::cout << "Input first and last name, username, email and password of the player" << std::endl;
 	String fName, lName, uName, email, pass;
 	std::cin >> fName >> lName >> uName >> email >> pass;
 
@@ -190,10 +200,14 @@ Command6::~Command6() {
 }
 
 void Command6::execute() {
+	std::cout << std::endl;
+
 	if (!game->adminisLoggedIn()) {
 		std::cout << "Log in as an admin to delete a player!" << std::endl;
 		return;
 	}
+
+	std::cout << "Input the username of the player:" << std::endl;
 	String username;
 	std::cin >> username;
 
@@ -218,6 +232,8 @@ Command7::~Command7() {
 }
 
 void Command7::execute() {
+	std::cout << std::endl;
+
 	if (!game->adminisLoggedIn()) {
 		std::cout << "Log in as an admin to see all admins!" << std::endl;
 		return;
@@ -239,6 +255,8 @@ Command8::~Command8() {
 }
 
 void Command8::execute() {
+	std::cout << std::endl;
+
 	if (!game->adminisLoggedIn()) {
 		std::cout << "Log in as an admin to see all players!" << std::endl;
 		return;
@@ -259,7 +277,9 @@ Command9::~Command9() {
 }
 
 
-void Command9::execute() { 
+void Command9::execute() {
+	std::cout << std::endl;
+
 	if (!game->adminisLoggedIn()) {
 		std::cout << "Log in as an admin to add heroes to the shop!" << std::endl;
 		return;
@@ -305,7 +325,7 @@ void Command9::execute() {
 				std::cout << "Input power:";
 				std::cin >> power;
 				std::cout << std::endl;
-				if (price < 0) {
+				if (power < 0) {
 					throw 1;
 				}
 				break;
@@ -369,6 +389,8 @@ Command10::~Command10() {
 }
 
 void Command10::execute() {
+	std::cout << std::endl;
+
 	if (!game->playerIsLoggedIn()) {
 		std::cout << "Log in as a player to delete your profile!" << std::endl;
 		return;
@@ -388,6 +410,8 @@ Command11::~Command11() {
 }
 
 void Command11::execute() {
+	std::cout << std::endl;
+
 	if (!game->playerIsLoggedIn()) {
 		std::cout << "Log in as a player to see all players!" << std::endl;
 		return;
@@ -407,6 +431,8 @@ Command12::~Command12() {
 }
 
 void Command12::execute() {
+	std::cout << std::endl;
+
 	if (!game->playerIsLoggedIn()) {
 		std::cout << "Log in as a player to see leaderboard!" << std::endl;
 		return;
@@ -426,6 +452,8 @@ Command13::~Command13() {
 }
 
 void Command13::execute() {
+	std::cout << std::endl;
+
 	if (!game->playerIsLoggedIn()) {
 		std::cout << "Log in as a player to see the market!" << std::endl;
 		return;
@@ -445,6 +473,8 @@ Command14::~Command14() {
 }
 
 void Command14::execute() {
+	std::cout << std::endl;
+
 	if (!game->playerIsLoggedIn()) {
 		std::cout << "Log in as a player to see your balance!" << std::endl;
 		return;
@@ -464,6 +494,8 @@ Command15::~Command15() {
 }
 
 void Command15::execute() {
+	std::cout << std::endl;
+
 	if (!game->playerIsLoggedIn()) {
 		std::cout << "Log in as a player to buy a hero!" << std::endl;
 		return;
@@ -474,20 +506,20 @@ void Command15::execute() {
 	}
 
 	String fName, lName;
-	while (true) {
-		std::cout << "Input the 2 names of the hero you want to buy!" << std::endl;
-		std::cin >> fName >> lName;
-		std::cout << std::endl;
-		try {
-			game->buyHero(fName, lName);
-			return;
-		}
-		catch (int code) {
-			if (code == 701) {
-				std::cout << "Hero with this name doesn't exist! Try searching again!" << std::endl;
-			}
+	
+	std::cout << "Input the 2 names of the hero you want to buy!" << std::endl;
+	std::cin >> fName >> lName;
+	std::cout << std::endl;
+	try {
+		game->buyHero(fName, lName);
+		return;
+	}
+	catch (int code) {
+		if (code == 701) {
+			std::cout << "Hero with this name doesn't exist! Try searching again!" << std::endl;
 		}
 	}
+	
 	
 }
 
@@ -501,6 +533,8 @@ Command16::~Command16() {
 }
 
 void Command16::execute() {
+	std::cout << std::endl;
+
 	if (!game->playerIsLoggedIn()) {
 		std::cout << "Log in as a player to be able to attack other players!" << std::endl;
 		return;
@@ -511,35 +545,35 @@ void Command16::execute() {
 		return;
 	}
 	String Uname, FnameAtck, LnameAtck, FnameDef, LnameDef;
-	while (true) {
-		std::cout << "Input the nickname of the player you want to attack: ";
-		std::cin >> Uname;
-		std::cout << std::endl;
+	
+	std::cout << "Input the nickname of the player you want to attack: ";
+	std::cin >> Uname;
+	std::cout << std::endl;
 
-		std::cout << "Enter the names of the superhero you want to attack with: ";
-		std::cin >> FnameAtck >> LnameAtck;
-		std::cout << std::endl;
+	std::cout << "Enter the names of the superhero you want to attack with: ";
+	std::cin >> FnameAtck >> LnameAtck;
+	std::cout << std::endl;
 
-		std::cout << "Enter the names of the superhero you want to attack:";
-		std::cin >> FnameDef >> LnameDef;
-		std::cout << std::endl;
+	std::cout << "Enter the names of the superhero you want to attack:";
+	std::cin >> FnameDef >> LnameDef;
+	std::cout << std::endl;
 
-		try {
-			game->attack(Uname, FnameAtck, LnameAtck, FnameDef, LnameDef);
-			return;
+	try {
+		game->attack(Uname, FnameAtck, LnameAtck, FnameDef, LnameDef);
+		return;
+	}
+	catch (int code) {
+		if (code == 801) {
+			std::cout << "Player with this username doesn't exist! Try again!" << std::endl;
 		}
-		catch (int code) {
-			if (code == 801) {
-				std::cout << "Player with this username doesn't exist! Try again!" << std::endl;
-			}
-			if (code == 802) {
-				std::cout << "You don't have a hero with this name! Try again!" << std::endl;
-			}
-			if (code == 803) {
-				std::cout << "Your oponent doesn't have a hero with this name! Try again!" << std::endl;
-			}
+		if (code == 802) {
+			std::cout << "You don't have a hero with this name! Try again!" << std::endl;
+		}
+		if (code == 803) {
+			std::cout << "Your oponent doesn't have a hero with this name! Try again!" << std::endl;
 		}
 	}
+	
 	return;
 }
 
@@ -554,6 +588,8 @@ Command17::~Command17() {
 }
 
 void Command17::execute() {
+	std::cout << std::endl;
+
 	if (!game->playerIsLoggedIn()) {
 		std::cout << "Log in as a player to change your hero mode!" << std::endl;
 		return;
@@ -565,19 +601,19 @@ void Command17::execute() {
 	}
 
 	String fName, lName;
-	while (true) {
-		std::cout << "Input the 2 names of the hero whose mode you want to change!" << std::endl;
-		std::cin >> fName >> lName;
-		std::cout << std::endl;
-		try {
-			game->changeMode(fName, lName);
-			return;
-		}
-		catch (int code) {
-			if (code == 701) {
-				std::cout << "You don't have this hero! Try again!" << std::endl;
-			}
+	
+	std::cout << "Input the 2 names of the hero whose mode you want to change!" << std::endl;
+	std::cin >> fName >> lName;
+	std::cout << std::endl;
+	try {
+		game->changeMode(fName, lName);
+		return;
+	}
+	catch (int code) {
+		if (code == 701) {
+			std::cout << "You don't have this hero! Try again!" << std::endl;
 		}
 	}
+	
 	
 }

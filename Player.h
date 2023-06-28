@@ -9,7 +9,9 @@ public:
 	Player() : balance(0), turnsRemaining(3) {}
 	Player(String Fname, String Lname, String Uname, String Email, String Pass, unsigned bal);
 	
-	void buySuperhero(Superhero& a); //CHECK!!
+	void buySuperhero(Superhero& a); 
+	void destroySuperhero(int index);
+	void changeHeroMode(int index);
 	void winMoney(const unsigned amount);
 	void loseMoney(const unsigned amount);
 	void resetTurns();

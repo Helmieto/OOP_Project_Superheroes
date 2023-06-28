@@ -24,13 +24,21 @@ void Player::resetTurns() {
 void Player::useTurn() {
 	turnsRemaining -= 1;
 }
-//CHECK
+
 void Player::buySuperhero(Superhero& a) {
 	a.changeMode();
 	heroes.pushBack(a);
+	loseMoney(a.getPrice());
 	return;
 }
 
+void Player::destroySuperhero(int index) {
+	heroes.popAt(index);
+}
+
+void Player::changeHeroMode(int index) {
+	heroes[index].changeMode();
+}
 void Player::winMoney(const unsigned amount) {
 	setBalance(getBalance() + amount);
 }

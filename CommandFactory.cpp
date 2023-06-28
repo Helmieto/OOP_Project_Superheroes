@@ -9,6 +9,9 @@ CommandFactory& CommandFactory::getInstance()
 Command* CommandFactory::getCommand(Game& game) const{
 	
     while (true) {
+
+        std::cout << std::endl;
+
         std::cout << "Input a command code!" << std::endl;
         int n;
         std::cin >> n;
